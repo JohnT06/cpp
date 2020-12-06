@@ -50,5 +50,6 @@ int main() {
     cout << Check(134) << endl;
     cout << Check(001) << endl;
     cout << Check(123) << endl;
+    hello test
 */
 }
