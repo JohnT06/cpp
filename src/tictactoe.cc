@@ -48,104 +48,102 @@ void printBoard(int board[]) {
     printf("+---+---+---+\n");
 }
 
-int main() {
-  //int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-  int board[9] = {0, -1, -1, 0, 1, 0, 1, -1, 1 };
-  printBoard(board);
+int playO(int board[]) {
+  int play = 0;
+  do {
+    cout << "Enter number for O: ";
+    cin >> play;
+    if (play < 1 || play > 9) {
+      cout << "Invalid play!\n";
+      continue;
+    }
+    play -= 1;
+    if (board[play] != 0) {
+      cout << "You cannot play here!\n";
+      continue;
+    }
+    break;
+  } while (true);
+  return play;
 }
 
+int playX(int board[]) {
+  int play = 0;
+  do {
+    cout << "Enter number for X: ";
+    cin >> play;
+    if (play < 1 || play > 9) {
+      cout << "Invalid play!\n";
+      continue;
+    }
+    play -= 1;
+    if (board[play] != 0) {
+      cout << "You cannot play here!\n";
+      continue;
+    }
+    break;
+  } while (true);
+  return play;
+}
 
-//#include <iostream>
-//#include <cstdio>
-//
-//using namespace std;
-//
-//char toSymbol(int board[], int index) {
-//  if (board[index] > 0) { return 'O'; }
-//  else if (board[index] < 0) { return 'X'; }
-//  else { return index + '1'; }
-//}
-//void printBoard(int board[]) {
-//  printf("+---+---+---+\n");
-//  printf("+ %c + %c + %c +\n",
-//	 toSymbol(board, 0), toSymbol(board, 1), toSymbol(board, 2));
-//  printf("+---+---+---+\n");
-//  printf("+ %c + %c + %c +\n",
-//	 toSymbol(board, 3), toSymbol(board, 4), toSymbol(board, 5));
-//  printf("+---+---+---+\n");
-//  printf("+ %c + %c + %c +\n",
-//	 toSymbol(board, 6), toSymbol(board, 7), toSymbol(board, 8));
-//  printf("+---+---+---+\n");
-//}
-//
-//int playO(int board[]) {
-//  int play = 0;
-//  do {
-//    cout << "Enter number for O: ";
-//    cin >> play;
-//    if (play < 1 || play > 9) {
-//      cout << "Invalid play!\n";
-//      continue;
-//    }
-//    play -= 1;
-//    if (board[play] != 0) {
-//      cout << "You cannot play here!\n";
-//      continue;
-//    }
-//    break;
-//  } while (true);
-//  return play;
-//}
-//
-//int playX(int board[]) {
-//  int play = 0;
-//  do {
-//    cout << "Enter number for X: ";
-//    cin >> play;
-//    if (play < 1 || play > 9) {
-//      cout << "Invalid play!\n";
-//      continue;
-//    }
-//    play -= 1;
-//    if (board[play] != 0) {
-//      cout << "You cannot play here!\n";
-//      continue;
-//    }
-//    break;
-//  } while (true);
-//  return play;
-//}
-//
-//int isGameOver(int board[]) {
-//  // Implement here. Return as following.
-//  //  0 - not over yet.
-//  //  1 - O win
-//  // -1 - X win
-//  return 0;
-//}
-//
-//int main() {
-//  int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0 };
-//  printBoard(board);
-//  for (int i = 0;; ++i) {
-//    int play = 0;
-//    if (i % 2 == 0) {
-//      play = playO(board);
-//      board[play] = 1;
-//    } else {
-//      play = playX(board);
-//      board[play] = -1;
-//    }
-//    printBoard(board);
-//    int game_over = isGameOver(board);
-//    if (game_over > 0) {
-//      cout << "O win!\n";
-//      break;
-//    }
-//    if (game_over < 0) {
-//      cout << "X win!\n";
-//      break;
-//    }
-//  }
-//}
+int isGameOver(int board[]) {
+    int GameOver = 0;
+    int sum;
+    // -->
+    for(int i = 0; i <=6; i +=3) {
+        sum =  board[i] + board[i+1] + board[i+2];
+        if (abs(sum) == 3) {
+            return sum/3;
+        } 
+    }
+    // V
+    for (int i = 0; i <=3; i++) {
+        sum =  board[i] + board[i+3] + board[i+6];
+        if (abs(sum) == 3) {
+            return sum/3;
+        } 
+    }
+    // X
+    sum = board[0] + board[4] + board[8];
+    if (abs(sum) == 3) {
+        return sum/3;
+    }
+
+    sum = board[2] + board[4] + board[6];
+    if (abs(sum) == 3) {
+        return sum/3;
+    }
+
+    return 0;
+  // Implement here. Return as following.
+  //  0 - not over yet.
+  //  1 - O win
+  // -1 - X win
+  //return 0;
+}
+
+int main() {
+  int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  printBoard(board);
+  for (int i = 0;; ++i) {
+    int play = 0;
+    if (i % 2 == 0) {
+      play = playO(board);
+      board[play] = 1;
+    } else {
+      play = playX(board);
+      board[play] = -1;
+    }
+    printBoard(board);
+    int game_over = isGameOver(board);
+    if (game_over > 0) {
+      cout << "O win!\n";
+      break;
+    }
+    if (game_over < 0) {
+      cout << "X win!\n";
+      break;
+    }
+  }
+}
+
