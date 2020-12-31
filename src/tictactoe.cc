@@ -3,6 +3,8 @@
 
 using namespace std;
 
+int isGameOver(int board[]);
+
 // When the board has no plays.
 // Put the indexes in each box.
 // +---+---+---+
@@ -39,7 +41,7 @@ void printBoard(int board[]) {
             printf("| X ");
         }
         else if(board[i] == 1) {
-            printf("| 0 ");
+            printf("| O ");
         }
         if (i%3 == 2) {
             printf("| \n");
@@ -68,63 +70,77 @@ int playO(int board[]) {
 }
 
 int playX(int board[]) {
-  int play = 0;
-  do {
-    cout << "Enter number for X: ";
-    cin >> play;
-    if (play < 1 || play > 9) {
-      cout << "Invalid play!\n";
-      continue;
+//  int play = 0;
+  int check;
+  int wf[8][4] = {{1,2,3,0},{1,4,7,0},{1,5,9,0},{4,5,6,0},{2,5,8,0},{3,5,7,0},{7,8,9,0},{3,6,9,0}};
+  for(int h=-1;h<2;h+=2) {
+    for(int i=0;i<9;i++) {
+      if(board[i]==0) {
+        board[i]=h;
+        check = isGameOver(board);
+        board[i]=0;
+        if(check!=0)
+          return i;
+      }
     }
-    play -= 1;
-    if (board[play] != 0) {
-      cout << "You cannot play here!\n";
-      continue;
+  }
+
+  if(board[4]==0)
+      return 4;
+
+  int min = 1000;
+  int cand = -1;
+  for(int i=0;i<9;i++) {
+    if(board[i]!=0) continue;
+    if(cand==-1) cand = i;
+    board[i]=-1;
+    int sum = 0;
+    for(int j=0;j<8;j++) {
+      wf[j][3]=0;
+      for(int k=0;k<3;k++) {
+        wf[j][3] = wf[j][3] + board[wf[j][k]-1];
+      }
+      sum += wf[j][3];
     }
-    break;
-  } while (true);
-  return play;
+    if(sum <= min) {
+        min = sum;
+        cand = i;
+    }
+    board[i]=0;
+  }
+  return cand;
 }
 
 int isGameOver(int board[]) {
-    int GameOver = 0;
-    int sum;
-    // -->
-    for(int i = 0; i <=6; i +=3) {
-        sum =  board[i] + board[i+1] + board[i+2];
-        if (abs(sum) == 3) {
-            return sum/3;
-        } 
-    }
-    // V
-    for (int i = 0; i <=3; i++) {
-        sum =  board[i] + board[i+3] + board[i+6];
-        if (abs(sum) == 3) {
-            return sum/3;
-        } 
-    }
-    // X
-    sum = board[0] + board[4] + board[8];
-    if (abs(sum) == 3) {
-        return sum/3;
-    }
-
-    sum = board[2] + board[4] + board[6];
-    if (abs(sum) == 3) {
-        return sum/3;
-    }
-
-    return 0;
   // Implement here. Return as following.
   //  0 - not over yet.
   //  1 - O win
   // -1 - X win
-  //return 0;
+  // 1 2 3
+  // 4 5 6
+  // 7 8 9
+  int check[8][3] = {{1,2,3},{1,4,7},{1,5,9},{4,5,6},{2,5,8},{3,5,7},{7,8,9},{3,6,9}};
+  int win = 0;
+  for(int i = 0; i < 8 ; i++) {
+    win = 0;
+    for(int j = 0; j < 3 ; j++) {
+      //cout << board[check[i][j]-1] << " ";
+      win += board[check[i][j]-1];
+    }
+    win = win / 3;
+    //cout << " " << win;
+    if(win!=0) return win;
+    //cout << endl;
+  }
+  return 0;
 }
 
 int main() {
   int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  //int board[9] = {0, 0, 0, 0, 0, 0, 1, 1, 1 };
   printBoard(board);
+
+  //printf("%d\n", isGameOver(board));
   for (int i = 0;; ++i) {
     int play = 0;
     if (i % 2 == 0) {
@@ -146,4 +162,5 @@ int main() {
     }
   }
 }
+
 
