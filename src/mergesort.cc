@@ -7,8 +7,12 @@ vector<int> merge_sort(vector<int> lhs, vector<int> rhs) {
   // Homework: update code here.
   vector<int> out;
   int i=0, j=0;
-  while(i<lhs.size() && j<rhs.size()) {
-      if(lhs[i] > rhs[j]) {
+  while(i<lhs.size() || j<rhs.size()) {
+      if(i==lhs.size()) {
+          out.push_back(rhs[j++]);
+      } else if(j==rhs.size()) {
+          out.push_back(lhs[i++]);
+      } else if(lhs[i] > rhs[j]) {
           out.push_back(rhs[j++]);
       } else {
           out.push_back(lhs[i++]);
@@ -24,11 +28,11 @@ vector<int> merge_sort(vector<int> lhs, vector<int> rhs) {
 }
 
 int main() {
-  //vector<int> merged = merge_sort({1, 2, 3}, {1, 3, 4});
+  vector<int> merged = merge_sort({1, 2, 3}, {1, 3, 4});
   //vector<int> merged = merge_sort({1, 2, 3}, {4, 5, 6});
   //vector<int> merged = merge_sort({1, 2, 3}, {});
   //vector<int> merged = merge_sort({},{1, 2, 3});
-  vector<int> merged = merge_sort({},{});
+  //vector<int> merged = merge_sort({},{});
   for (vector<int>::iterator i = merged.begin(); i != merged.end(); ++i) {
     cout << *i << ' ';
   }
