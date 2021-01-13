@@ -18,12 +18,6 @@ vector<int> merge_sort(vector<int> lhs, vector<int> rhs) {
           out.push_back(lhs[i++]);
       }
   }
-  while(i<lhs.size()) {
-      out.push_back(lhs[i++]);
-  }
-  while(j<rhs.size()) {
-          out.push_back(rhs[j++]);
-  }
   return out;
 }
 
